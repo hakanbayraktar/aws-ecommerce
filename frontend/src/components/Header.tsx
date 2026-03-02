@@ -25,15 +25,15 @@ export default function Header() {
                 </Link>
 
                 {/* Premium Search Bar */}
-                <div className="hidden lg:flex flex-grow max-w-xl relative group">
-                    <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                <div className="flex flex-grow max-w-xl relative group mx-4">
+                    <div className="absolute inset-y-0 left-4 flex items-center">
                         <Search className="w-4 h-4 text-slate-500 group-focus-within:text-purple-400 transition-colors" />
                     </div>
                     <input
                         type="text"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Search for infrastructure components..."
+                        placeholder="Search components..."
                         className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500/50 transition-all hover:bg-white/10"
                     />
                 </div>
