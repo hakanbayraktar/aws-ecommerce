@@ -35,8 +35,8 @@ export default function Catalog() {
                 console.error('Failed to fetch products, using fallback mock data', err);
                 const mockData = [
                     { id: '1', name: 'Cloud-Native Hoodie', price: 59, description: 'Premium heavyweight cotton with AWS-inspired art.', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800' },
-                    { id: '2', name: 'DevOps Atolyesi Desk Mat', price: 35, description: 'Extra large workspace mat for architects.', image: 'https://images.unsplash.com/photo-1542330952-f410bb1836a3?auto=format&fit=crop&q=80&w=800' },
-                    { id: '3', name: 'Infinite Scaling Mug', price: 18, description: 'Double-walled ceramic for long coding sessions.', image: 'https://images.unsplash.com/photo-1515202989188-da9d1502479e?auto=format&fit=crop&q=80&w=800' },
+                    { id: '2', name: 'DevOps Atolyesi Desk Mat', price: 35, description: 'Extra large workspace mat for architects.', image: 'https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&q=80&w=800' },
+                    { id: '3', name: 'Infinite Scaling Mug', price: 18, description: 'Double-walled ceramic for long coding sessions.', image: 'https://images.unsplash.com/photo-1481833761820-0509d3217039?auto=format&fit=crop&q=80&w=800' },
                 ];
                 const filtered = searchTerm
                     ? mockData.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
