@@ -45,7 +45,7 @@ terraform {
     key            = "state/terraform.tfstate"
     region         = "$REGION"
     encrypt        = true
-    # use_lockfile   = true # Enable S3 Native Locking (Supported in modern TF/OpenTofu)
+    use_lockfile   = true # Enable S3 Native Locking (Supported in modern TF/OpenTofu)
   }
 }
 EOF

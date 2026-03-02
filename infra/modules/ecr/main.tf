@@ -8,7 +8,7 @@ variable "environment" {
 variable "services" {
   description = "List of microservices"
   type        = list(string)
-  default     = ["search", "product", "cart", "order"]
+  default     = ["search", "product", "cart", "order", "payment", "notification", "analytics", "frontend"]
 }
 
 resource "aws_ecr_repository" "services" {

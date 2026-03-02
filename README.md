@@ -11,6 +11,11 @@ A premium, production-grade e-commerce storefront built with a microservices arc
 - **Data Engineering**: Kinesis Firehose, S3 Data Lake, Glue, Athena.
 - **Security**: AWS Cognito for Auth, Cloudflare for WAF/DNS.
 
+### Architecture Diagrams
+| Overview | Full Infrastructure | Order Workflow |
+|---|---|---|
+| ![Architecture](docs/images/architecture.png) | ![Full Infra](docs/images/full_infra.png) | ![Workflow](docs/images/workflow.png) |
+
 ---
 
 ## 🛠 Local Development (Docker-First)
