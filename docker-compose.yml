@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://search:3000
+    networks:
+      - ecommerce-network
+
+  # Search Microservice
+  search:
+    build:
+      context: ./backend/services/search
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3000"
+    networks:
+      - ecommerce-network
+
+  # Product Microservice
+  product:
+    build:
+      context: ./backend/services/product
+      dockerfile: Dockerfile
+    ports:
+      - "3002:3000"
+    networks:
+      - ecommerce-network
+
+  # Cart Microservice
+  cart:
+    build:
+      context: ./backend/services/cart
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3000"
+    networks:
+      - ecommerce-network
+
+  # Order Microservice
+  order:
+    build:
+      context: ./backend/services/order
+      dockerfile: Dockerfile
+    ports:
+      - "3004:3000"
+    networks:
+      - ecommerce-network
+
+networks:
+  ecommerce-network:
+    driver: bridge

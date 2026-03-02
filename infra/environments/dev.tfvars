@@ -1,0 +1,6 @@
+environment        = "dev"
+aws_region         = "us-east-1"
+vpc_cidr           = "10.0.0.0/16"
+rds_instance_class = "db.t3.micro"
+db_username        = "dbadmin_dev"
+db_password        = "DevSecurePass123!"

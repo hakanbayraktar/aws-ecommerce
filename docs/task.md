@@ -1,0 +1,41 @@
+# Task List - AWS E-commerce Project
+
+- [x] Create detailed Implementation Plan [x]
+- [x] Define Microservices boundaries and API contracts [x]
+- [x] Setup Directory Structure [x]
+- [x] Sync detailed plans to project `docs/` folder [x]
+- [x] Conduct Sprint 2 Review & Sprint 3 Planning meeting [x]
+
+## Phase 2: Infrastructure as Code (Terraform) [/]
+- [x] Setup VPC, Subnets, and Networking [x]
+- [x] Refactor modules to Best Practices (main/var/output) [x]
+- [x] Configure Environment-specific variables (tfvars) [x]
+- [x] Provision RDS (PostgreSQL) and DynamoDB [x]
+- [x] Setup ElastiCache (Redis) and OpenSearch [x]
+- [x] Setup ECS Fargate Cluster & Task Definitions [x]
+- [x] Provision ECR Repositories [x]
+
+## Phase 3: Backend Microservices Development [x]
+- [x] Base Microservice Template (NestJS/TypeScript) [x]
+- [x] Search Service Implementation [x]
+- [x] Product Service Implementation [x]
+- [x] Cart & Order Services Implementation [x]
+- [x] Step Functions Workflow for Order Lifecycle [x]
+- [ ] Auth Service (Cognito/Keycloak integration) [/]
+- [ ] Payment Service (Mock Integration) [/]
+- [ ] Notification & SES/SNS Integration [/]
+
+## Phase 4: Frontend Development [ ]
+- [ ] Setup Next.js Project with Tailwind CSS [ ]
+- [ ] Implement Core Components (UI/UX) [ ]
+- [ ] Integrate with Backend APIs (API Gateway) [ ]
+
+## Phase 5: CI/CD & Automation [ ]
+- [ ] Create GitHub Actions Workflows for Microservices [ ]
+- [ ] Create Terraform Deployment Pipeline [ ]
+- [ ] Setup Monitoring (CloudWatch/Loki/Grafana) [ ]
+
+## Phase 6: Testing & Go-Live [ ]
+- [ ] Integration Testing [ ]
+- [ ] Load Testing [ ]
+- [ ] Final Domain/SSL Configuration [ ]

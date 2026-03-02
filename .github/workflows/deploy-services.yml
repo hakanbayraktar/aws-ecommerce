@@ -1,0 +1,26 @@
+# Microservices CI/CD Workflow Skeleton
+
+name: Microservices CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'backend/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      # Add build and push steps for each service here
+      - name: Build Search Service
+        run: |
+          echo "Building Search Service..."
+          # docker build -t search-service ./backend/services/search
+          # docker push ...
