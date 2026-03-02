@@ -1,7 +1,7 @@
 # Frontend - Dockerfile for Next.js 14
 
 # --- Build Stage ---
-FROM node:18-alpine AS builder
+FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
@@ -13,7 +13,7 @@ COPY . .
 RUN npm run build
 
 # --- Production Stage ---
-FROM node:18-alpine AS runner
+FROM node:20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV production

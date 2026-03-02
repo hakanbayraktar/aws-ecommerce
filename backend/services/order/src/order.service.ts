@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class OrderService {
-    private orders = [];
+    private orders: any[] = [];
 
     findOne(id: string) {
         return this.orders.find(o => o.id === id);
