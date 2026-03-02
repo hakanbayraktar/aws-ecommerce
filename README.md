@@ -46,6 +46,16 @@ The infrastructure provisions a **brand new VPC** with:
 - **Isolated Subnets**: For RDS and ElastiCache.
 - **Mult-AZ Redundancy**: Spread across two availability zones.
 
+### Terraform Remote State Setup
+Before running `terraform apply`, you must create the remote state backend (S3 & DynamoDB) to ensure state safety and locking.
+
+```bash
+# Run the setup script
+chmod +x infra/scripts/setup-remote-state.sh
+./infra/scripts/setup-remote-state.sh dev us-east-1
+```
+This will create a bucket named `ecommerce-aws-store-tf-state-dev` with versioning enabled for **S3 Native Locking**.
+
 ---
 
 ## 🏗 Continuous Integration & Deployment (GitHub Actions)

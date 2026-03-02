@@ -1,3 +1,15 @@
+# Terraform Configuration
+# Note: After running infra/scripts/setup-remote-state.sh, uncomment the backend block below
+# terraform {
+#   backend "s3" {
+#     bucket         = "ecommerce-aws-store-tf-state-dev"
+#     key            = "state/terraform.tfstate"
+#     region         = "us-east-1"
+#     encrypt        = true
+#     # use_lockfile   = true # Enable S3 Native Locking
+#   }
+# }
+
 terraform {
   required_providers {
     aws = {
