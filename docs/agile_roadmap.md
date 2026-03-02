@@ -46,10 +46,10 @@ Project Domain: `devopsatolyesi.xyz`
 ## Sprint 3: Microservices & Compute (Week 5-7)
 **Goal**: Develop and deploy containerized business logic.
 
-### [STORY-301] Service Development (NestJS) [/]
+### [STORY-301] Service Development (NestJS) [x]
 - **Task 301.1**: Create base microservice template. [x]
 - **Task 301.2**: Implement `ProductService` and `SearchService` APIs. [x]
-- **Task 301.3**: Implement `OrderService` and `CartService`. [/]
+- **Task 301.3**: Implement `OrderService` and `CartService`. [x]
 
 ### [STORY-302] Container Orchestration (ECS Fargate) [x]
 - **Task 302.1**: Provision ECS Cluster and Task Definitions for each service. [x]
@@ -61,10 +61,10 @@ Project Domain: `devopsatolyesi.xyz`
 ## Sprint 4: Premium Frontend & UX (Week 8-10)
 **Goal**: Build a high-performance storefront with modern web tech.
 
-### [STORY-401] Next.js Storefront
-- **Task 401.1**: Setup Next.js 14 with App Router and Tailwind CSS.
-- **Task 401.2**: Implement Responsive Homepage and Search functionality.
-- **Task 401.3**: Secure User Authentication via AWS Cognito integration.
+### [STORY-401] Next.js Storefront [/]
+- **Task 401.1**: Setup Next.js 14 with App Router and Tailwind CSS. [x]
+- **Task 401.2**: Implement Responsive Homepage and Search functionality. [/]
+- **Task 401.3**: Secure User Authentication via AWS Cognito integration. [x]
 
 ---
 

@@ -58,7 +58,8 @@ This document details the technical strategy, architecture, and deployment plan 
     - **Integration**: Database instance tests.
     - **E2E**: Playwright (UI flows).
 
-## 4. Documentation Strategy
-- All plans are synced to the `./docs` folder in the project root.
-- `README.md` provides local setup and deployment guides.
-- Agile progress is tracked in `agile_roadmap.md` and `task.md`.
+## 4. Documentation & Career Strategy
+- **README expansion**: Detailed local Docker setup, manual Terraform steps per environment, and CI/CD workflow explanations.
+- **Architecture Deep Dive**: Documentation of VPC design, networking, autoscaling, and service breakdown in `README.md`.
+- **Career Impact**: A dedicated `cv_project_highlights.md` artifact will distill the technical complexity and impact into professional bullet points for the user's resume.
+- **Documentation Sync**: All plans, meeting notes, and technical drafts are synced to the `./docs` folder in the project root.

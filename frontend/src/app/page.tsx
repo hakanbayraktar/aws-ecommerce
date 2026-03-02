@@ -1,25 +1,11 @@
 import { ShoppingCart, Search, User, ArrowRight, Zap, Shield, Globe } from 'lucide-react';
+import Catalog from '../components/Catalog';
+import Header from '../components/Header';
 
 export default function Home() {
   return (
     <main className="min-h-screen">
-      {/* Navigation */}
-      <nav className="glass sticky top-0 z-50 px-6 py-4 flex items-center justify-between">
-        <div className="text-2xl font-bold text-gradient tracking-tight">DEVOPS ATOLYESI</div>
-        <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
-          <a href="#" className="hover:text-purple-400 transition-colors">Catalog</a>
-          <a href="#" className="hover:text-purple-400 transition-colors">Featured</a>
-          <a href="#" className="hover:text-purple-400 transition-colors">Builds</a>
-        </div>
-        <div className="flex items-center space-x-6">
-          <Search className="w-5 h-5 cursor-pointer opacity-70 hover:opacity-100" />
-          <User className="w-5 h-5 cursor-pointer opacity-70 hover:opacity-100" />
-          <div className="relative cursor-pointer group">
-            <ShoppingCart className="w-5 h-5 opacity-70 group-hover:opacity-100" />
-            <span className="absolute -top-2 -right-2 bg-purple-600 text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold">0</span>
-          </div>
-        </div>
-      </nav>
+      <Header />
 
       {/* Hero Section */}
       <section className="relative pt-20 pb-32 px-6 overflow-hidden">
@@ -43,6 +29,22 @@ export default function Home() {
               View Architecture
             </button>
           </div>
+        </div>
+      </section>
+
+      {/* Product Catalog Section */}
+      <section className="py-24 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-end justify-between mb-12">
+            <div>
+              <h2 className="text-4xl font-bold mb-4 tracking-tight">Technical <span className="text-gradient">Catalog</span></h2>
+              <p className="text-slate-400">Premium hardware and software services for the DevOps ecosystem.</p>
+            </div>
+            <button className="text-sm font-semibold text-purple-400 hover:text-purple-300 transition-colors flex items-center">
+              View All <ArrowRight className="ml-2 w-4 h-4" />
+            </button>
+          </div>
+          <Catalog />
         </div>
       </section>
 
