@@ -1,26 +1,44 @@
-# Microservices CI/CD Workflow Skeleton
-
 name: Microservices CD
 
 on:
   push:
     branches: [ main ]
     paths:
-      - 'backend/**'
+      - 'backend/services/**'
+      - 'frontend/**'
 
 jobs:
-  build-and-deploy:
+  build-and-push:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [search, product, cart, order, payment, notification, analytics, frontend]
+    
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
       - name: Login to Amazon ECR
+        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # Add build and push steps for each service here
-      - name: Build Search Service
+      - name: Build, Tag, and Push Image to ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          SERVICE_NAME: ecommerce-${{ matrix.service }}
         run: |
-          echo "Building Search Service..."
-          # docker build -t search-service ./backend/services/search
-          # docker push ...
+          docker build -t $ECR_REGISTRY/$SERVICE_NAME:${{ github.sha }} ./backend/services/${{ matrix.service }}
+          docker push $ECR_REGISTRY/$SERVICE_NAME:${{ github.sha }}
+          docker tag $ECR_REGISTRY/$SERVICE_NAME:${{ github.sha }} $ECR_REGISTRY/$SERVICE_NAME:latest
+          docker push $ECR_REGISTRY/$SERVICE_NAME:latest
+
+      - name: Update ECS Service
+        run: |
+          aws ecs update-service --cluster ecommerce-cluster-dev --service $SERVICE_NAME-dev --force-new-deployment

@@ -33,6 +33,11 @@ export class OrderService {
                 newOrder.status = 'PAID';
                 console.log('Payment Approved. Transaction ID:', paymentRes.transactionId);
 
+                // SIMULATE SNS ALERT for high value orders
+                if (orderData.total > 500) {
+                    console.log(`[SNS ALERT] High-value order detected: Order ${newOrder.id} ($${orderData.total}).`);
+                }
+
                 // 2. Send Notification
                 console.log('Calling Notification Service...');
                 await fetch('http://notification:3000/notifications/send', {
@@ -48,6 +53,8 @@ export class OrderService {
             } else {
                 newOrder.status = 'PAYMENT_FAILED';
                 console.error('Payment Failed.');
+                // SIMULATE SNS ALERT for failure
+                console.warn(`[SNS ALERT] Critical: Payment failed for Order ${newOrder.id}. Alerting operations...`);
             }
         } catch (err) {
             console.error('Orchestration error (services might be down):', err.message);

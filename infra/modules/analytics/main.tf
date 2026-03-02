@@ -18,16 +18,26 @@ resource "aws_iam_role" "firehose_role" {
   })
 }
 
-resource "aws_kinesis_firehose_delivery_stream" "clickstream" {
-  name        = "ecommerce-clickstream-${var.environment}"
-  destination = "extended_s3"
+resource "aws_glue_catalog_database" "ecommerce_db" {
+  name = "ecommerce_analytics_${var.environment}"
+}
 
-  extended_s3_configuration {
-    role_arn   = aws_iam_role.firehose_role.arn
-    bucket_arn = aws_s3_bucket.data_lake.arn
+resource "aws_glue_crawler" "clickstream_crawler" {
+  database_name = aws_glue_catalog_database.ecommerce_db.name
+  name          = "ecommerce-clickstream-crawler-${var.environment}"
+  role          = aws_iam_role.firehose_role.arn # Reusing role for simplicity in this demo
 
-    processing_configuration {
-      enabled = "false"
+  s3_target {
+    path = "s3://${aws_s3_bucket.data_lake.bucket}/clickstream/"
+  }
+}
+
+resource "aws_athena_workgroup" "analytics" {
+  name = "ecommerce-analytics-${var.environment}"
+
+  configuration {
+    result_configuration {
+      output_location = "s3://${aws_s3_bucket.data_lake.bucket}/athena-results/"
     }
   }
 }

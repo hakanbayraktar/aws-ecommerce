@@ -1,119 +1,83 @@
-# AWS eCommerce Platform - Cloud Native & Microservices
+# AWS Cloud-Native E-commerce Platform 🚀
 
-![Architecture Overview](docs/images/full_infra.png)
+A premium, production-grade e-commerce storefront built with a microservices architecture, featuring real-time search, automated order orchestration, and a secure serverless infrastructure.
 
-## 🏗 Project Architecture
-
-This platform is a high-availability, scalable e-commerce solution built natively on AWS. It leverages a microservices-oriented approach to ensure decoupling and independent scalability of core business domains.
-
-### 🌐 Networking & Security
-*   **VPC Design**: A custom-built **Multi-AZ VPC** with three distinct tiers of subnets:
-    *   **Public Subnets**: Host the Application Load Balancer (ALB) and NAT Gateways.
-    *   **Private (App) Subnets**: Host the ECS Fargate tasks. These are isolated from direct internet access.
-    *   **Data Subnets**: Host RDS, ElastiCache, and OpenSearch for maximum data isolation.
-*   **Edge Security**: **Cloudflare** handles DNS, providing a WAF and DDoS protection before traffic reaches the AWS **Application Load Balancer**.
-*   **Authentication**: **AWS Cognito** provides a fully managed user directory and OAuth 2.0 compliant authentication for the frontend.
-
-### 🚀 Compute & Microservices
-The system uses a **Container-First** approach with **AWS ECS Fargate** for serverless compute.
-*   **Frontend**: Built with **Next.js 14** (App Router), deployed as a standalone container.
-*   **Backend Services (NestJS)**:
-    *   **Search Service**: Real-time product discovery via OpenSearch integration.
-    *   **Product Service**: Catalog management using DynamoDB with Multi-Region/Multi-AZ replication.
-    *   **Cart Service**: Sub-millisecond basket management using Redis.
-    *   **Order Service**: Orchestrates the checkout workflow using **AWS Step Functions**.
-    *   **Payment Service**: Mock gateway for transaction processing.
-    *   **Notification Service**: Event-driven alerts via SNS/SES.
-
-### 🔄 Business Workflows
-![Business Workflow](docs/images/workflow.png)
-The platform uses an event-driven model. For example, when an order is placed:
-1.  **Frontend** sends a request to the **Order Service**.
-2.  **Order Service** triggers a **Step Function** State Machine.
-3.  State Machine coordinates: **Stock Lock (Product Service)** -> **Payment (Payment Service)** -> **Notify (Notification Service)** -> **Ship (Order Sync)**.
+## 🏗 High-Level Architecture
+- **Frontend**: Next.js 14 (App Router, Tailwind CSS, Lucide React).
+- **Backend**: NestJS (TypeScript) microservices (Search, Product, Cart, Order, Payment, Notification, Analytics).
+- **Orchestration**: AWS Step Functions for order fulfillment lifecycle.
+- **Infrastructure**: AWS ECS Fargate, ALB, RDS (PostgreSQL), DynamoDB, Redis, OpenSearch.
+- **Observability**: CloudWatch, X-Ray, SNS, and a custom Analytics Dashboard.
+- **Data Engineering**: Kinesis Firehose, S3 Data Lake, Glue, Athena.
+- **Security**: AWS Cognito for Auth, Cloudflare for WAF/DNS.
 
 ---
 
-## 🐳 Local Development (Docker-First)
+## 🛠 Local Development (Docker-First)
 
-This project strictly follows a **Zero-Local-Environment** policy. You do not need Node.js or databases installed on your host.
+This project is strictly containerized. No local `node` or `npm` installation is required.
 
 ### Prerequisites
-*   Docker & Docker Compose.
+- Docker & Docker Compose
+- AWS CLI (configured for terraform/cloud runs)
 
-### Running the Stack
-1.  **Clone the repository**.
-2.  **Start all services**:
-    ```bash
-    docker-compose up --build
-    ```
-3.  **Access the applications**:
-    *   Next.js UI: [http://localhost:3000](http://localhost:3000)
-    *   Microservices APIs: `localhost:3001` to `3006`.
-
----
-
-## 🛠 Manual Infrastructure Deployment (Terraform)
-
-Infrastructure is managed via modular Terraform code in the `infra/` directory, supporting **Dev** and **Prod** environments with full parity.
-
-### 1. Development Deployment
+### Run Entire System Locally
 ```bash
-cd infra
-terraform init
-terraform plan -var-file="environments/dev.tfvars"
-terraform apply -var-file="environments/dev.tfvars"
+docker-compose up --build
 ```
-
-### 2. Production Deployment
-```bash
-terraform plan -var-file="environments/prod.tfvars"
-terraform apply -var-file="environments/prod.tfvars"
-```
-
-*Note: Production variables use higher-spec instances (e.g., `db.t3.medium`) and multi-AZ configurations.*
+- **Storefront**: `http://localhost:3000`
+- **Admin Dashboard**: `http://localhost:3000/admin/dashboard`
+- **API Entrypoint**: `http://localhost:80` (ALB Simulation)
 
 ---
 
-## 🚀 CI/CD & Automation (GitHub Actions)
+## 🌐 Infrastructure as Code (Terraform)
 
-The project includes production-grade automation for both infrastructure and applications.
+### Manual Infrastructure Creation
+1. Navigate to the `infra` directory: `cd infra`
+2. Initialize: `terraform init`
+3. Check plan: `terraform plan -var-file="terraform.tfvars"`
+4. Apply: `terraform apply -var-file="terraform.tfvars"`
 
-### 1. Infrastructure Pipeline ([deploy-infra.yml](.github/workflows/deploy-infra.yml))
-*   **Trigger**: Push to `main` branch or manual dispatch.
-*   **Steps**: `Standard Lint` -> `Terraform Plan` -> `Manual Approval` (for Prod) -> `Terraform Apply`.
-
-### 2. Application Pipeline ([deploy-services.yml](.github/workflows/deploy-services.yml))
-*   **Steps**:
-    *   Build optimized Docker images.
-    *   Security scan images for vulnerabilities.
-    *   Push to **AWS ECR**.
-    *   Update **ECS Task Definitions** and trigger service deployment.
-
-### 🔑 Required GitHub Secrets & Variables
-
-To configure the pipelines, add the following to your GitHub Repository:
-
-| Name | Type | Description |
-| :--- | :--- | :--- |
-| `AWS_ACCESS_KEY_ID` | Secret | IAM User Access Key |
-| `AWS_SECRET_ACCESS_KEY` | Secret | IAM User Secret Key |
-| `TF_VAR_db_password` | Secret | RDS PostgreSQL Master Password |
-| `TF_VAR_db_username` | Secret | RDS PostgreSQL Master Username |
-| `CLOUDFLARE_API_TOKEN` | Secret | Token for DNS/WAF management |
-| `AWS_REGION` | Variable | Default region (e.g., `us-east-1`) |
-| `ENVIRONMENT` | Variable | `dev` or `prod` |
+### New VPC & Networking
+The infrastructure provisions a **brand new VPC** with:
+- **Public Subnets**: For ALB and NAT Gateway.
+- **Private Subnets**: For ECS Fargate Tasks and internal microservices.
+- **Isolated Subnets**: For RDS and ElastiCache.
+- **Mult-AZ Redundancy**: Spread across two availability zones.
 
 ---
 
-## 📈 Monitoring & Scalability
-*   **Autoscaling**: ECS services are configured with target tracking policies (CPU/Memory) to scale task counts automatically.
-*   **Observability**: Integrated with **AWS CloudWatch Logs** and **Container Insights** for real-time monitoring.
+## 🏗 Continuous Integration & Deployment (GitHub Actions)
+
+### Automated Pipeline
+The `.github/workflows` directory contains high-impact workflows:
+1. **Infra Deploy**: Automatically runs `terraform apply` on pushes to `main`.
+2. **Service Deploy**: Builds Docker images, pushes to **Amazon ECR**, and triggers a rolling update to **ECS Fargate**.
+
+### Required GitHub Secrets
+To enable the pipelines, set the following repository secrets:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+- `DB_PASSWORD` (For RDS)
+- `COGNITO_USER_POOL_ID` (Generated after first infra run)
 
 ---
 
-## 📝 Document Reference
-*   [Career / CV Highlights](docs/career/cv_project_highlights.md)
-*   [Detailed Sprint Tasks](docs/task.md)
-*   [Agile Roadmap](docs/agile_roadmap.md)
-*   [Implementation Strategy](docs/implementation_plan.md)
+## 📊 Analytics & Observability
+- **Auto-Scaling**: ECS services scale from 1 to 5 tasks based on CPU utilization (>70%).
+- **Load Balancing**: An Application Load Balancer (ALB) uses path-based routing (`/search*`, `/order*`, etc.) to route traffic to the correct microservice.
+- **Clickstream Data**: All user interactions are streamed via **Kinesis Firehose** to an **S3 Data Lake**.
+- **SQL on S3**: Use **Amazon Athena** to query raw clickstream data directly from the S3 bucket using standard SQL.
+
+---
+
+## 📝 Roadmap & Sprint Tracking
+Detailed project progress is tracked in the `docs/` folder:
+- [Agile Roadmap](./docs/agile_roadmap.md)
+- [Task List](./docs/task.md)
+- [Meeting Notes](./docs/meetings/)
+
+---
+*Built with ❤️ by the DevOps Atolyesi Team.*

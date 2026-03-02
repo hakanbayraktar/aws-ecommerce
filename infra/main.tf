@@ -59,3 +59,9 @@ module "analytics" {
   environment = var.environment
   region      = var.aws_region
 }
+
+module "monitoring" {
+  source           = "./modules/monitoring"
+  environment      = var.environment
+  ecs_cluster_name = module.ecs.cluster_name
+}
