@@ -6,9 +6,9 @@ import { configureAmplify } from './amplify-config';
 
 const isMockAuth = !process.env.NEXT_PUBLIC_USER_POOL_ID || process.env.NEXT_PUBLIC_USER_POOL_ID.includes('example');
 
-if (!isMockAuth) {
-    configureAmplify();
-}
+// Always configure Amplify to avoid 'Amplify has not been configured' errors
+// Even if using mock auth, we provide dummy values to satisfy the internal state
+configureAmplify();
 
 interface AuthContextType {
     user: any;
@@ -30,6 +30,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     async function checkUser() {
+        if (isMockAuth) {
+            setLoading(false);
+            return;
+        }
         try {
             const currentUser = await getCurrentUser();
             const session = await fetchAuthSession();
