@@ -4,6 +4,8 @@ import { ShoppingCart, Search, User, LogOut } from 'lucide-react';
 import { useCart } from '../lib/cart/CartContext';
 import { useAuth } from '../lib/auth/AuthContext';
 import Link from 'next/link';
+import { useState } from 'react';
+import CartDrawer from './CartDrawer';
 
 export default function Header() {
     const { totalItems } = useCart();
