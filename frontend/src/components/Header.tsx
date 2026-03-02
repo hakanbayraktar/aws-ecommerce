@@ -10,6 +10,7 @@ import CartDrawer from './CartDrawer';
 export default function Header() {
     const { totalItems } = useCart();
     const { user, logout } = useAuth();
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
     return (
         <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-6 border-b border-white/5 bg-black/20 backdrop-blur-xl">
@@ -29,7 +30,10 @@ export default function Header() {
 
                 <div className="flex items-center space-x-6">
                     <div className="relative group">
-                        <button className="p-2 hover:bg-white/5 rounded-xl transition-colors relative">
+                        <button
+                            onClick={() => setIsDrawerOpen(true)}
+                            className="p-2 hover:bg-white/5 rounded-xl transition-colors relative"
+                        >
                             <ShoppingCart className="w-5 h-5 text-slate-400 group-hover:text-white" />
                             {totalItems > 0 && (
                                 <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-purple-600 text-[10px] font-bold flex items-center justify-center border-2 border-black text-white animate-pulse">
@@ -56,6 +60,7 @@ export default function Header() {
                     )}
                 </div>
             </div>
+            <CartDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
         </nav>
     );
 }

@@ -1,7 +1,8 @@
 "use client";
 
-import { X, ShoppingBag, Trash2, ArrowRight } from 'lucide-react';
+import { X, ShoppingBag, Trash2, ArrowRight, Loader2 } from 'lucide-react';
 import { useCart } from '../lib/cart/CartContext';
+import { useState } from 'react';
 
 interface CartDrawerProps {
     isOpen: boolean;
