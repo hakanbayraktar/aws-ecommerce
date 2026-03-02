@@ -4,7 +4,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { getCurrentUser, signOut, fetchAuthSession, signIn, signUp, confirmSignUp } from 'aws-amplify/auth';
 import { configureAmplify } from './amplify-config';
 
-configureAmplify();
+const isMockAuth = !process.env.NEXT_PUBLIC_USER_POOL_ID || process.env.NEXT_PUBLIC_USER_POOL_ID.includes('example');
+
+if (!isMockAuth) {
+    configureAmplify();
+}
 
 interface AuthContextType {
     user: any;
@@ -37,17 +41,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
-    async function handleSignIn(params: any) {
+    async function handleSignIn(params: { username: string, password: any }) {
+        if (isMockAuth) {
+            setUser({ username: params.username, signInDetails: { loginId: params.username } });
+            return;
+        }
         const res = await signIn(params);
         await checkUser();
         return res;
     }
 
     async function handleSignUp(params: any) {
+        if (isMockAuth) return;
         return await signUp(params);
     }
 
     async function handleConfirmSignUp(params: any) {
+        if (isMockAuth) return;
         const res = await confirmSignUp(params);
         await checkUser();
         return res;
@@ -55,7 +65,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     async function logout() {
         try {
-            await signOut();
+            if (!isMockAuth) {
+                await signOut();
+            }
             setUser(null);
         } catch (error) {
             console.error('Error signing out:', error);

@@ -39,9 +39,9 @@ export default function Header() {
                 </div>
 
                 <div className="hidden md:flex items-center space-x-8 text-sm font-medium text-slate-400 flex-shrink-0">
-                    <Link href="/" className="hover:text-white transition-colors">Infrastructure</Link>
-                    <Link href="/" className="hover:text-white transition-colors">Services</Link>
-                    <Link href="/" className="hover:text-white transition-colors">Cloud Tools</Link>
+                    <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="hover:text-white transition-colors">Infrastructure</button>
+                    <button onClick={() => document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' })} className="hover:text-white transition-colors">Services</button>
+                    <Link href="/admin/dashboard" className="hover:text-white transition-colors">Admin Panel</Link>
                 </div>
 
                 <div className="flex items-center space-x-6">

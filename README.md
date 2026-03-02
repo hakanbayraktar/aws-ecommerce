@@ -29,6 +29,11 @@ docker-compose up --build
 - **Admin Dashboard**: `http://localhost:3000/admin/dashboard`
 - **API Entrypoint**: `http://localhost:80` (ALB Simulation)
 
+### 🔑 Default Credentials (Local Stack)
+Since Cognito is mocked/pre-configured for LocalStack or local dev:
+- **Test User**: `test@example.com` / `Password123!`
+- **Admin User**: `admin@devops.store` / `AdminPass123!`
+
 ---
 
 ## 🌐 Infrastructure as Code (Terraform)

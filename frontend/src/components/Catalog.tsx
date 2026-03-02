@@ -34,9 +34,9 @@ export default function Catalog() {
             } catch (err) {
                 console.error('Failed to fetch products, using fallback mock data', err);
                 const mockData = [
-                    { id: '1', name: 'Cloud-Native Hoodie', price: 59, description: 'Premium heavyweight cotton with AWS-inspired art.', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=400' },
-                    { id: '2', name: 'DevOps Atolyesi Desk Mat', price: 35, description: 'Extra large workspace mat for architects.', image: 'https://images.unsplash.com/photo-1616627561950-9f746bcd554e?auto=format&fit=crop&q=80&w=400' },
-                    { id: '3', name: 'Infinite Scaling Mug', price: 18, description: 'Double-walled ceramic for long coding sessions.', image: 'https://images.unsplash.com/photo-1514228742587-6b1558fbed20?auto=format&fit=crop&q=80&w=400' },
+                    { id: '1', name: 'Cloud-Native Hoodie', price: 59, description: 'Premium heavyweight cotton with AWS-inspired art.', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800' },
+                    { id: '2', name: 'DevOps Atolyesi Desk Mat', price: 35, description: 'Extra large workspace mat for architects.', image: 'https://images.unsplash.com/photo-1542330952-f410bb1836a3?auto=format&fit=crop&q=80&w=800' },
+                    { id: '3', name: 'Infinite Scaling Mug', price: 18, description: 'Double-walled ceramic for long coding sessions.', image: 'https://images.unsplash.com/photo-1515202989188-da9d1502479e?auto=format&fit=crop&q=80&w=800' },
                 ];
                 const filtered = searchTerm
                     ? mockData.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -77,7 +77,7 @@ export default function Catalog() {
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div id="catalog" className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {products.map((product) => (
                 <div key={product.id} className="glass p-6 rounded-[2rem] group hover:border-purple-500/50 transition-all flex flex-col">
                     <div className="w-full h-48 rounded-2xl overflow-hidden mb-6 bg-white/5 relative">
