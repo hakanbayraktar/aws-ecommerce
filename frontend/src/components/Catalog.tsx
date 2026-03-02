@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { ShoppingCart, Zap } from 'lucide-react';
 import { useCart } from '../lib/cart/CartContext';
+import { useSearch } from '../lib/search/SearchContext';
 
 interface Product {
     id: string;
@@ -16,34 +17,64 @@ export default function Catalog() {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const { addItem } = useCart();
+    const { searchTerm } = useSearch();
 
     useEffect(() => {
         // In a real scenario, this would call the Search Service
         // which aggregates data from OpenSearch
         const fetchProducts = async () => {
             try {
-                // SIMULATED API CALL to Search Service
-                // const res = await fetch(`${process.env.NEXT_PUBLIC_SEARCH_API_URL}/search`);
-                // const data = await res.json();
-
+                setLoading(true);
+                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+                const query = searchTerm ? `?q=${encodeURIComponent(searchTerm)}` : '';
+                const res = await fetch(`${apiUrl}/search${query}`);
+                if (!res.ok) throw new Error('Failed to fetch from Search Service');
+                const data = await res.json();
+                setProducts(data);
+            } catch (err) {
+                console.error('Failed to fetch products, using fallback mock data', err);
                 const mockData = [
                     { id: '1', name: 'Cloud-Native Hoodie', price: 59, description: 'Premium heavyweight cotton with AWS-inspired art.', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=400' },
                     { id: '2', name: 'DevOps Atolyesi Desk Mat', price: 35, description: 'Extra large workspace mat for architects.', image: 'https://images.unsplash.com/photo-1616627561950-9f746bcd554e?auto=format&fit=crop&q=80&w=400' },
                     { id: '3', name: 'Infinite Scaling Mug', price: 18, description: 'Double-walled ceramic for long coding sessions.', image: 'https://images.unsplash.com/photo-1514228742587-6b1558fbed20?auto=format&fit=crop&q=80&w=400' },
                 ];
-
-                setProducts(mockData);
-            } catch (err) {
-                console.error('Failed to fetch products', err);
+                const filtered = searchTerm
+                    ? mockData.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                    : mockData;
+                setProducts(filtered);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchProducts();
-    }, []);
+    }, [searchTerm]);
 
-    if (loading) return <div className="text-center py-20 opacity-50">Loading future tech...</div>;
+    if (loading) {
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[1, 2, 3].map((i) => (
+                    <div key={i} className="glass p-6 rounded-[2rem] animate-pulse">
+                        <div className="w-full h-48 rounded-2xl bg-white/5 mb-6" />
+                        <div className="h-6 w-3/4 bg-white/5 rounded-lg mb-4" />
+                        <div className="h-4 w-full bg-white/5 rounded-lg mb-2" />
+                        <div className="h-4 w-2/3 bg-white/5 rounded-lg mb-8" />
+                        <div className="h-12 w-full bg-white/5 rounded-xl" />
+                    </div>
+                ))}
+            </div>
+        );
+    }
+
+    if (products.length === 0 && !loading) {
+        return (
+            <div className="text-center py-20 opacity-50 flex flex-col items-center">
+                <Zap className="w-12 h-12 mb-4 text-purple-500" />
+                <p className="text-xl font-bold">No components found in this region.</p>
+                <button onClick={() => useSearch().setSearchTerm('')} className="mt-4 text-purple-400 hover:underline">Clear search</button>
+            </div>
+        );
+    }
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

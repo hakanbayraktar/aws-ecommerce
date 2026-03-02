@@ -10,7 +10,28 @@ interface CartDrawerProps {
 }
 
 export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
-    const { items, removeItem, totalPrice, totalItems } = useCart();
+    const { items, removeItem, totalPrice, totalItems, clearCart } = useCart();
+    const [isCheckingOut, setIsCheckingOut] = useState(false);
+
+    const handleCheckout = async () => {
+        setIsCheckingOut(true);
+        try {
+            // SIMULATED API CALL to Order Service
+            // const res = await fetch(`${process.env.NEXT_PUBLIC_ORDER_API_URL}/orders`, {
+            //   method: 'POST',
+            //   body: JSON.stringify({ items, total: totalPrice })
+            // });
+
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate network lag
+            alert('Order Placed Successfully! AWS Step Functions have been triggered.');
+            clearCart();
+            onClose();
+        } catch (error) {
+            alert('Checkout failed. Please check your cloud connectivity.');
+        } finally {
+            setIsCheckingOut(false);
+        }
+    };
 
     if (!isOpen) return null;
 
@@ -75,9 +96,15 @@ export default function CartDrawer({ isOpen, onClose }: CartDrawerProps) {
                                 <span className="text-2xl font-black text-white">${totalPrice.toFixed(2)}</span>
                             </div>
                             <button
-                                className="w-full premium-gradient py-4 rounded-2xl font-bold flex items-center justify-center shadow-lg shadow-purple-500/20 hover:scale-[1.02] transition-transform group"
+                                onClick={handleCheckout}
+                                disabled={isCheckingOut}
+                                className="w-full premium-gradient py-4 rounded-2xl font-bold flex items-center justify-center shadow-lg shadow-purple-500/20 hover:scale-[1.02] transition-transform group disabled:opacity-50 disabled:hover:scale-100"
                             >
-                                Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                                {isCheckingOut ? (
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                ) : (
+                                    <>Proceed to Checkout <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" /></>
+                                )}
                             </button>
                             <p className="text-center text-[10px] text-slate-500 uppercase tracking-widest font-bold">
                                 Secure cloud-native checkout

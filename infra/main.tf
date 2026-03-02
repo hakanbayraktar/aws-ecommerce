@@ -53,3 +53,9 @@ module "auth" {
   source      = "./modules/auth"
   environment = var.environment
 }
+
+module "analytics" {
+  source      = "./modules/analytics"
+  environment = var.environment
+  region      = var.aws_region
+}

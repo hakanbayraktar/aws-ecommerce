@@ -55,6 +55,36 @@ services:
     networks:
       - ecommerce-network
 
+  # Payment Microservice
+  payment:
+    build:
+      context: ./backend/services/payment
+      dockerfile: Dockerfile
+    ports:
+      - "3005:3000"
+    networks:
+      - ecommerce-network
+
+  # Notification Microservice
+  notification:
+    build:
+      context: ./backend/services/notification
+      dockerfile: Dockerfile
+    ports:
+      - "3006:3000"
+    networks:
+      - ecommerce-network
+
+  # Analytics Microservice
+  analytics:
+    build:
+      context: ./backend/services/analytics
+      dockerfile: Dockerfile
+    ports:
+      - "3007:3000"
+    networks:
+      - ecommerce-network
+
 networks:
   ecommerce-network:
     driver: bridge

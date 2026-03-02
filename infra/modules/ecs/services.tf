@@ -13,10 +13,12 @@ variable "service_config" {
     image  = string
   }))
   default = {
-    "search"  = { cpu = 256, memory = 512, image = "ecommerce-search-dev" }
-    "product" = { cpu = 256, memory = 512, image = "ecommerce-product-dev" }
-    "cart"    = { cpu = 256, memory = 512, image = "ecommerce-cart-dev" }
-    "order"   = { cpu = 256, memory = 512, image = "ecommerce-order-dev" }
+    "search"       = { cpu = 256, memory = 512, image = "ecommerce-search-dev" }
+    "product"      = { cpu = 256, memory = 512, image = "ecommerce-product-dev" }
+    "cart"         = { cpu = 256, memory = 512, image = "ecommerce-cart-dev" }
+    "order"        = { cpu = 256, memory = 512, image = "ecommerce-order-dev" }
+    "payment"      = { cpu = 256, memory = 512, image = "ecommerce-payment-dev" }
+    "notification" = { cpu = 256, memory = 512, image = "ecommerce-notification-dev" }
   }
 }
 
@@ -44,7 +46,7 @@ resource "aws_ecs_task_definition" "services" {
 
   container_definitions = jsonencode([{
     name      = each.key
-    image     = "${each.value.image}" # This would normally be the ECR URL
+    image     = "${each.value.image}"
     essential = true
     portMappings = [{
       containerPort = var.app_port
@@ -78,5 +80,31 @@ resource "aws_ecs_service" "services" {
     target_group_arn = aws_lb_target_group.services[each.key].arn
     container_name   = each.key
     container_port   = var.app_port
+  }
+}
+
+# Autoscaling Resources
+resource "aws_appautoscaling_target" "ecs_target" {
+  for_each           = var.service_config
+  max_capacity       = 5
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.main.name}/${aws_ecs_service.services[each.key].name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "ecs_policy_cpu" {
+  for_each           = var.service_config
+  name               = "cpu-autoscaling-${each.key}"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.ecs_target[each.key].resource_id
+  scalable_dimension = aws_appautoscaling_target.ecs_target[each.key].scalable_dimension
+  service_namespace  = aws_appautoscaling_target.ecs_target[each.key].service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    target_value = 70
   }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { getCurrentUser, signOut, fetchAuthSession } from 'aws-amplify/auth';
+import { getCurrentUser, signOut, fetchAuthSession, signIn, signUp, confirmSignUp } from 'aws-amplify/auth';
 import { configureAmplify } from './amplify-config';
 
 configureAmplify();
@@ -9,6 +9,9 @@ configureAmplify();
 interface AuthContextType {
     user: any;
     loading: boolean;
+    signIn: (params: any) => Promise<any>;
+    signUp: (params: any) => Promise<any>;
+    confirmSignUp: (params: any) => Promise<any>;
     logout: () => Promise<void>;
 }
 
@@ -34,6 +37,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
+    async function handleSignIn(params: any) {
+        const res = await signIn(params);
+        await checkUser();
+        return res;
+    }
+
+    async function handleSignUp(params: any) {
+        return await signUp(params);
+    }
+
+    async function handleConfirmSignUp(params: any) {
+        const res = await confirmSignUp(params);
+        await checkUser();
+        return res;
+    }
+
     async function logout() {
         try {
             await signOut();
@@ -44,7 +63,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     return (
-        <AuthContext.Provider value={{ user, loading, logout }}>
+        <AuthContext.Provider value={{
+            user,
+            loading,
+            logout,
+            signIn: handleSignIn,
+            signUp: handleSignUp,
+            confirmSignUp: handleConfirmSignUp
+        }}>
             {children}
         </AuthContext.Provider>
     );

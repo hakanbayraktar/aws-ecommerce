@@ -1,15 +1,16 @@
 "use client";
 
 import { useState } from 'react';
-import { signIn, signUp } from 'aws-amplify/auth';
 import { useRouter } from 'next/navigation';
 import { LogIn, UserPlus, ShieldCheck, Mail, Lock } from 'lucide-react';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isSignUp, setIsSignUp] = useState(false);
     const [error, setError] = useState('');
+    const { signIn, signUp } = useAuth();
     const router = useRouter();
 
     async function handleSubmit(e: React.FormEvent) {
@@ -25,7 +26,7 @@ export default function LoginPage() {
                 alert('Verification code sent to your email.');
             } else {
                 await signIn({ username: email, password });
-                router.push('/');
+                router.replace('/');
             }
         } catch (err: any) {
             setError(err.message || 'An error occurred');

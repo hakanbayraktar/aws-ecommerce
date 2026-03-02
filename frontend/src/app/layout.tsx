@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { CartProvider } from "@/lib/cart/CartContext";
+import { SearchProvider } from "@/lib/search/SearchContext";
 
 const inter = Inter({ subsets: ["latin"], weight: ['400', '600', '700'] });
 
@@ -22,8 +23,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <CartProvider>
-            <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900 via-slate-900 to-black"></div>
-            {children}
+            <SearchProvider>
+              <div className="fixed inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-900 via-slate-900 to-black"></div>
+              {children}
+            </SearchProvider>
           </CartProvider>
         </AuthProvider>
       </body>
