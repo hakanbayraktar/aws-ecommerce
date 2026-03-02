@@ -48,3 +48,8 @@ module "step_functions" {
   source      = "./modules/step_functions"
   environment = var.environment
 }
+
+module "auth" {
+  source      = "./modules/auth"
+  environment = var.environment
+}

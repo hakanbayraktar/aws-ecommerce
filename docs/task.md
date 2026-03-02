@@ -16,6 +16,11 @@
 - [x] Provision ECR Repositories [x]
 
 ## Phase 3: Backend Microservices Development [x]
+- [x] Dockerize all Microservices (Search, Product, Cart, Order) [x]
+- [x] Dockerize Frontend (Next.js 14 Standalone) [x]
+- [x] Provision AWS Cognito Infrastructure (Terraform) [x]
+- [ ] Implement Auth Context (Dockerized Workflow) [/]
+- [x] Eliminate all local `node_modules` and local environment dependencies [x]
 - [x] Base Microservice Template (NestJS/TypeScript) [x]
 - [x] Search Service Implementation [x]
 - [x] Product Service Implementation [x]
@@ -25,10 +30,11 @@
 - [ ] Payment Service (Mock Integration) [/]
 - [ ] Notification & SES/SNS Integration [/]
 
-## Phase 4: Frontend Development [ ]
-- [ ] Setup Next.js Project with Tailwind CSS [ ]
-- [ ] Implement Core Components (UI/UX) [ ]
-- [ ] Integrate with Backend APIs (API Gateway) [ ]
+## Phase 4: Frontend Development [/]
+- [ ] Setup Next.js 14 Project with Tailwind CSS [/]
+- [ ] Implement Premium Core Components (UI/UX) [ ]
+- [ ] Setup AWS Cognito Auth Integration [ ]
+- [ ] Integrate with Backend APIs (ALB/CloudFront) [ ]
 
 ## Phase 5: CI/CD & Automation [ ]
 - [ ] Create GitHub Actions Workflows for Microservices [ ]

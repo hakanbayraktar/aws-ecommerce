@@ -27,3 +27,13 @@ output "alb_dns_name" {
   description = "The DNS name of the Application Load Balancer"
   value       = module.ecs.alb_dns_name
 }
+
+output "cognito_user_pool_id" {
+  description = "The ID of the Cognito User Pool"
+  value       = module.auth.user_pool_id
+}
+
+output "cognito_client_id" {
+  description = "The ID of the Cognito User Pool Client"
+  value       = module.auth.user_pool_client_id
+}

@@ -12,12 +12,17 @@ Act as a Principal Cloud Architect. Generate a full-stack, cloud-native e-commer
 - **Standards**: Multi-file modules (`main.tf`, `variables.tf`, `outputs.tf`).
 - **Networking**: VPC across 2 AZs, 3-tier subnets (Public, App, Data).
 - **Compute**: ECS Fargate Cluster. Use Task Definitions with IAM roles for least-privilege.
+- **Environment Parity**: Mandatory use of `.tfvars` for `dev` and `prod` isolation.
 - **Data**: 
     - RDS PostgreSQL (Multi-AZ).
     - DynamoDB with Streams enabled.
     - ElastiCache Redis Cluster.
     - OpenSearch for full-text search.
 - **Security**: Cognito User Pools, WAF with CloudFront, KMS for DB encryption.
+
+### 2. Strict Docker-First Development
+- **No Local Tools**: Zero installation of Node.js/npm on host machine.
+- **Container Workflow**: All development, builds, and tests must run via Docker and Docker Compose.
 
 ### 2. Backend (NestJS / TypeScript)
 - **Pattern**: Microservices separated by bounded contexts (Search, Product, Cart, Order, Notification).
