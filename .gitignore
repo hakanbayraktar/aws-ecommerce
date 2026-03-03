@@ -1,3 +1,35 @@
+# Dependencies
+node_modules/
+dist/
+.next/
 
-# LocalStack testing
-infra/localstack.override.tf
+# Terraform
+infra/.terraform/
+infra/*.tfstate
+infra/*.tfstate.backup
+infra/.terraform.lock.hcl
+infra/localstack_override.tf
+
+# Environment
+.env
+.env.local
+.env.production
+*.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build
+build/
+coverage/
